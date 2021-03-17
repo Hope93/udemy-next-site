@@ -1,0 +1,41 @@
+---
+path: /why-i-started
+date: '2020-12-01'
+title: Why I started
+description: This is why I started writing posts
+---
+# Hello Page 2
+Lorem ipsum
+## A topic
+dolor sit
+### Subtopic
+amet consectetur
+## Some Code
+```tsx
+const Code = ({ children, className = 'language-jsx' }: CodeProps) => {
+  const language = className.replace(/language-/, '') as Language
+  
+  return (
+    <Highlight {...defaultProps} code={children} language={language}>
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div {...getLineProps({line, key: i})}>
+              <span>{i+1}</span>  
+              <span>
+                {line.map((token, key) => (
+                  <span {...getTokenProps({token, key})}/>
+                ))}
+              </span>
+            </div>
+          ))}
+        </pre>
+      )}
+    </Highlight>
+  )
+}
+```
+---
+## References
+- [Atila's website](https://atila.io)
+- [NextJS's documentation](https://nextjs.org)

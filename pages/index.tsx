@@ -1,15 +1,32 @@
-import Head from 'next/head';
-import Header from '../components/header'
+import { InferGetStaticPropsType } from 'next';
+import PostIndex from '@components/post-index'
+import Page from '@layouts/page';
+import { getPosts } from '@shared/get-posts';
+import { POST_DIR } from 'config'
+import ShortBio from '@components/short-bio'
 
-export default function Home() {
+// home/index will just show the title and link to the post
+export default function Home({
+  posts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <>
-      <Head>
-        <title>All About NextJS</title>
-      </Head>
-      <main>
-        <Header />
-      </main>
-    </>
+    <Page>
+      <ShortBio />
+      <PostIndex list={posts} />
+    </Page>
   );
 }
+
+// we only want the front matter and slug in index page
+export const getStaticProps = async () => {
+  const posts = await getPosts(POST_DIR);
+  const allMdx = posts.map(({ slug, frontMatter }) => ({
+    slug,
+    frontMatter,
+  }));
+  return {
+    props: {
+      posts: allMdx,
+    },
+  };
+};
