@@ -4,6 +4,7 @@ import path from 'path';
 import renderToString from 'next-mdx-remote/render-to-string';
 import matter from 'gray-matter';
 import mdxComponents from '@shared/mdx-components'
+import type { MdxRemote } from 'next-mdx-remote/types'
 
 // sort of like a link with a domain name and the part that comes after the
 // domain name
@@ -24,7 +25,7 @@ export type FormattedPost = {
   slug: string;
   content: string;
   frontMatter: FrontMatter;
-  mdx: object;
+  mdx: MdxRemote.Source;
 };
 
 // takes path of posts and returns a list of posts with the filepath and slug
