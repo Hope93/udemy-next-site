@@ -3,30 +3,8 @@ import { promises as fs, readdirSync } from 'fs';
 import path from 'path';
 import renderToString from 'next-mdx-remote/render-to-string';
 import matter from 'gray-matter';
-import mdxComponents from '@shared/mdx-components'
-import type { MdxRemote } from 'next-mdx-remote/types'
-
-// sort of like a link with a domain name and the part that comes after the
-// domain name
-type PostFile = {
-  filepath: string;
-  slug: string;
-};
-
-export type FrontMatter = {
-  path: string
-  date: string;
-  title: string;
-  description: string
-};
-
-export type FormattedPost = {
-  filepath: string;
-  slug: string;
-  content: string;
-  frontMatter: FrontMatter;
-  mdx: MdxRemote.Source;
-};
+import mdxComponents from '@shared/mdx-components';
+import type { PostFile, FrontMatter } from './types';
 
 // takes path of posts and returns a list of posts with the filepath and slug
 const getDirData = (source: string): PostFile[] =>
@@ -35,12 +13,12 @@ const getDirData = (source: string): PostFile[] =>
     slug: name.replace(new RegExp(path.extname(name) + '$'), ''),
   }));
 
-// takes list of posts with the YAML and mdx and returns an object to pass to 
+// takes list of posts with the YAML and mdx and returns an object to pass to
 // hydrate to render the mdx
 const formatPostList = async ({ filepath, slug }: PostFile) => {
   const mdxSource = await fs.readFile(filepath);
   const { content, data } = matter(mdxSource);
-  const frontMatter = data as FrontMatter
+  const frontMatter = data as FrontMatter;
 
   const mdx = await renderToString(content, {
     components: mdxComponents,

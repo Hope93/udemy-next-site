@@ -1,4 +1,5 @@
-import { getPosts, FormattedPost } from '@shared/get-posts';
+import { getPosts } from '@shared/get-posts';
+import type { FormattedPost, PostFile } from '@shared/types';
 import {
   GetStaticPaths,
   GetStaticPropsContext,
@@ -7,7 +8,7 @@ import {
 import hydrate from 'next-mdx-remote/hydrate';
 import { POST_DIR } from 'config';
 import PostLayout from '@layouts/post';
-import mdxComponents from '@shared/mdx-components'
+import mdxComponents from '@shared/mdx-components';
 
 export default function Post({
   mdxContent,
@@ -53,7 +54,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   // we call getPost here too because we can't pass them from getStaticProps
   // however, can't we just call getPosts once outside of the functions as
   // a variable of this page/component
-  const posts = await getPosts(POST_DIR);
+  const posts: PostFile[] = await getPosts(POST_DIR);
 
   const { mdx, frontMatter } = posts.find(
     ({ slug: postSlug }) => postSlug === routeSlug
